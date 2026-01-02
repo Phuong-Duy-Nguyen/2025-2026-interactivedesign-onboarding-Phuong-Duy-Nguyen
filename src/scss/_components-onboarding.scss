@@ -29,17 +29,17 @@ body {
         left: 8%;
         width: 84%;
         height: 76%;
-        background: #fff;
+        background: $color-white;
         border-radius: 28px;
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
+        justify-content: space-around;
     }
 
     /* header */
     &__header {
         display: flex;
-        align-items: center;
         justify-content: center;
         position: relative;
         margin-bottom: 2rem;
@@ -55,7 +55,7 @@ body {
     }
 
     &__logo {
-        width: 50px;
+        width: 80px;
     }
 
     /* Lottie */
@@ -64,8 +64,8 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        max-width: 300px;
-        height: 300px;
+        max-width: 280px;
+        height: 280px;
         margin: 0 auto;
     }
 
@@ -73,6 +73,7 @@ body {
     &__content {
         text-align: center;
         padding: 0.5rem;
+
     }
 
     &__title {
@@ -98,6 +99,10 @@ body {
     &__dots {
         display: flex;
         gap: 0.4rem;
+
+        &--invisible {
+            display: none;
+        }
     }
 
     &__dot {
@@ -113,8 +118,8 @@ body {
     }
 
     &__next {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         border: none;
         background: $color-green;
@@ -144,19 +149,39 @@ body {
         }
     }
 
-
-    &__logo {
-        width: 80px;
-    }
-
-
     &__nexticon {
         width: 32px;
         height: 32px;
         color: $color-white;
     }
 
+    &__intro {
+        display: none;
+        height: 220px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__introimg {
+        width: 140px;
+    }
+
+    &__backicon {
+        width: 24px;
+        height: 24px;
+        fill: $color-green;
+        filter: drop-shadow(0 0 0 $color-green) drop-shadow(0 0 0 $color-green);
+        transition: transform 0.3s ease, fill 0.3s ease;
+
+        &:hover {
+            fill: darken($color-green, 10%);
+            transform: translateX(-2px);
+        }
+    }
+
+
 }
+
 
 
 .u-hidden {

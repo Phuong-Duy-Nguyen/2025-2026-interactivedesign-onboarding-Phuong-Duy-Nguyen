@@ -1,127 +1,147 @@
 import lottie from 'lottie-web';
+
 import discover from './discover.json';
 import shopping from './shopping.json';
 import payment from './payment.json';
 import driver from './driver.json';
-import receiving from './receiving.json';
 import tracking from './tracking.json';
+import receiving from './receiving.json';
 
-
-// Animaties en content per slide
 const slides = [
     {
-        type: "intro",
-        title: "Welcome to Bolt Food",
-        text: "Fast, fresh food delivered straight to your door."
+        type: 'intro',
+        title: 'Welcome to Bolt Food',
+        text: 'Fast, fresh food delivered straight to your door.'
     },
-    { animation: discover, title: "Discover local food", text: "Taste the flavours of the world with our wide selection of restaurants" },
-    { animation: shopping, title: "Add to cart & place your order", text: "Tap, tap, done! Place the order with just a few clicks" },
-    { animation: payment, title: "Safe checkout & order confirmed", text: "Paid & confirmed - your meal is being prepared." },
-    { animation: driver, title: "On the way!", text: "Your courier is heading to you with your fresh, hot meal." },
-    { animation: tracking, title: "Tracking Notification", text: "Your courier is just around the corner with your food." },
-    { animation: receiving, title: "Food Has Arrived", text: "Your order has arrived — time to dig in!" },
+    {
+        type: 'lottie',
+        animation: discover,
+        title: 'Discover local food',
+        text: 'Taste the flavours of the world with our wide selection of restaurants'
+    },
+    {
+        type: 'lottie',
+        animation: shopping,
+        title: 'Add to cart & place your order',
+        text: 'Tap, tap, done! Place the order with just a few clicks'
+    },
+    {
+        type: 'lottie',
+        animation: payment,
+        title: 'Safe checkout & order confirmed',
+        text: 'Paid & confirmed - your meal is being prepared.'
+    },
+    {
+        type: 'lottie',
+        animation: driver,
+        title: 'On the way!',
+        text: 'Your courier is heading to you with your fresh, hot meal.'
+    },
+    {
+        type: 'lottie',
+        animation: tracking,
+        title: 'Tracking Notification',
+        text: 'Your courier is just around the corner.'
+    },
+    {
+        type: 'lottie',
+        animation: receiving,
+        title: 'Food has arrived',
+        text: 'Your order has arrived - time to dig in!'
+    }
 ];
 
 let currentSlide = 0;
-const container = document.querySelector('.js-lottie');
+let anim = null;
+
+const htmlIntro = document.querySelector('.js-intro');
+const htmlLottie = document.querySelector('.js-lottie');
 const htmlTitle = document.querySelector('.js-title');
 const htmlText = document.querySelector('.js-text');
 const htmlNextBtn = document.querySelector('.js-next');
 const htmlBackBtn = document.querySelector('.js-back');
-const htmlDots = document.querySelectorAll('.c-onboarding__dot');
+const dots = document.querySelectorAll('.js-dot');
+const htmlDots = document.querySelector('.js-dots');
+const htmlHeader = document.querySelector('.js-header');
 
-// Laad initiële animatie
-let anim = lottie.loadAnimation({
-    container,
-    renderer: 'svg',
-    loop: false,
-    autoplay: true,
-    animationData: slides[currentSlide].animation,
-});
 
-// Update progress dots
-const updateDots = (index) => {
-    htmlDots.forEach((htmlDots, i) => {
-        htmlDots.classList.toggle('c-onboarding__dot--active', i === index);
+const fadeOut = (cb) => {
+    [htmlIntro, htmlLottie, htmlTitle, htmlText].forEach(el => {
+        el.style.transition = 'opacity .4s';
+        el.style.opacity = 0;
     });
-}
+    setTimeout(cb, 400);
+};
 
-// Update button text, class en action
+const updateDots = () => {
+    const index = Math.max(currentSlide - 1, 0);
+    dots.forEach((dot, i) =>
+        dot.classList.toggle('c-onboarding__dot--active', i === index)
+    );
+};
+
 const updateButton = () => {
     if (currentSlide === slides.length - 1) {
-        // Laatste slide → rechthoekige Explore Food knop
-        htmlNextBtn.innerHTML = "Explore Food";  // tekst ipv SVG
+        htmlNextBtn.textContent = 'Order Your First Meal';
         htmlNextBtn.classList.add('c-onboarding__next--explore');
-        htmlNextBtn.onclick = () => {
-            alert("Let's start exploring!");
-        };
+        htmlNextBtn.onclick = () => alert("Let's explore!");
     } else {
-        // Normale ronde knop met SVG
-        htmlNextBtn.innerHTML = '<img class="c-onboarding__nexticon" src="./img/arrow-right-short.svg" alt="arrow" />';
+        htmlNextBtn.innerHTML = '<img class="c-onboarding__nexticon" src="./img/arrow-right-short.svg">';
         htmlNextBtn.classList.remove('c-onboarding__next--explore');
         htmlNextBtn.onclick = nextSlide;
     }
-}
+};
 
+const loadSlide = () => {
+    const slide = slides[currentSlide];
 
-// Functie: naar volgende slide
+    htmlIntro.style.display = 'none';
+    htmlLottie.style.display = 'block';
+
+    if (slide.type === 'intro') {
+        htmlLottie.style.display = 'none';
+        htmlIntro.style.display = 'flex';
+        htmlDots.classList.add('c-onboarding__dots--invisible');
+        htmlHeader.classList.add('u-hidden');
+    } else {
+        htmlDots.classList.remove('c-onboarding__dots--invisible');
+        htmlHeader.classList.remove('u-hidden');
+        anim?.destroy();
+        anim = lottie.loadAnimation({
+            container: htmlLottie,
+            renderer: 'svg',
+            loop: false,
+            autoplay: true,
+            animationData: slide.animation
+        });
+    }
+
+    htmlTitle.textContent = slide.title;
+    htmlText.textContent = slide.text;
+
+    htmlBackBtn.style.visibility = currentSlide === 0 ? 'hidden' : 'visible';
+
+    updateDots();
+    updateButton();
+
+    [htmlIntro, htmlLottie, htmlTitle, htmlText].forEach(el => el.style.opacity = 1);
+};
+
 const nextSlide = () => {
     fadeOut(() => {
         currentSlide++;
-        if (currentSlide >= slides.length) currentSlide = slides.length - 1;
         loadSlide();
     });
-}
+};
 
-// Functie: naar vorige slide
 const prevSlide = () => {
     if (currentSlide === 0) return;
     fadeOut(() => {
         currentSlide--;
         loadSlide();
     });
-}
+};
 
-// Fade-out animatie voor container, titel en tekst
-const fadeOut = (callback) => {
-    container.style.transition = 'opacity 0.5s';
-    htmlTitle.style.transition = 'opacity 0.5s';
-    htmlText.style.transition = 'opacity 0.5s';
-
-    container.style.opacity = 0;
-    htmlTitle.style.opacity = 0;
-    htmlText.style.opacity = 0;
-
-    setTimeout(callback, 500); // match de transition-duration
-}
-
-// Laad de huidige slide
-const loadSlide = () => {
-    anim.destroy();
-
-    anim = lottie.loadAnimation({
-        container,
-        renderer: 'svg',
-        loop: false,
-        autoplay: true,
-        animationData: slides[currentSlide].animation,
-    });
-
-    htmlTitle.textContent = slides[currentSlide].title;
-    htmlText.textContent = slides[currentSlide].text;
-    updateDots(currentSlide);
-
-    // Fade-in
-    container.style.opacity = 1;
-    htmlTitle.style.opacity = 1;
-    htmlText.style.opacity = 1;
-
-    // Update knop
-    updateButton();
-}
-
-// Back button
 htmlBackBtn.addEventListener('click', prevSlide);
 
-// Init
-updateButton();
+loadSlide();
