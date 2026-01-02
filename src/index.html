@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bolt Foods</title>
+    <title>Bolt Foods Onboarding</title>
     <script type="module" src="./js/main.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
 
   <body>
@@ -15,19 +16,17 @@
         <div class="c-onboarding__screen">
           <!-- header -->
           <header class="c-onboarding__header">
-            <button class="c-onboarding__back">←</button>
-            <span class="c-onboarding__logo"><img src="./img/bolt-logo.svg" alt="logo Bolts" /></span>
+            <button class="c-onboarding__back js-back"><img src="./img/caret-left-fill.svg" alt="an arrow-right-short" srcset="" /></button>
+            <img class="c-onboarding__logo" src="./img/bolt-logo.svg" alt="Bolt logo" />
           </header>
 
-          <!-- illustration -->
-          <div class="c-onboarding__visual">
-            <img src="./assets/onboarding-illustration.png" alt="Discover food" />
-          </div>
+          <!-- illustration / Lottie container -->
+          <div class="c-onboarding__lottie js-lottie"></div>
 
           <!-- content -->
           <div class="c-onboarding__content">
-            <h2 class="c-onboarding__title">Discover local food</h2>
-            <p class="c-onboarding__text">Taste the flavours of the world with our wide selection of restaurants</p>
+            <h2 class="c-onboarding__title js-title">Discover local food</h2>
+            <p class="c-onboarding__text js-text">Taste the flavours of the world with our wide selection of restaurants</p>
           </div>
 
           <!-- footer -->
@@ -38,8 +37,9 @@
               <span class="c-onboarding__dot"></span>
               <span class="c-onboarding__dot"></span>
               <span class="c-onboarding__dot"></span>
+              <span class="c-onboarding__dot"></span>
             </div>
-            <button class="c-onboarding__next">→</button>
+            <button class="c-onboarding__next js-next"><img class="c-onboarding__nexticon" src="./img/arrow-right-short.svg" alt="an arrow-right-short" /></button>
           </div>
         </div>
       </div>
